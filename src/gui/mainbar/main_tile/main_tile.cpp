@@ -61,15 +61,18 @@ void main_tile_setup( void ) {
     lv_style_set_text_font( &datestyle, LV_STATE_DEFAULT, &Ubuntu_16px);
 
     clock_cont = mainbar_obj_create( main_cont );
-    lv_obj_set_size( clock_cont, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) / 2 );
+    //lv_obj_set_size( clock_cont, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) / 2 );
+    lv_obj_set_size( clock_cont, lv_disp_get_hor_res( NULL ) , lv_disp_get_ver_res( NULL ) );
     lv_obj_add_style( clock_cont, LV_OBJ_PART_MAIN, style );
     lv_obj_align( clock_cont, main_cont, LV_ALIGN_CENTER, 0, 0 );
 
+    /*
     timelabel = lv_label_create( clock_cont , NULL);
     lv_label_set_text(timelabel, "00:00");
     lv_obj_reset_style_list( timelabel, LV_OBJ_PART_MAIN );
     lv_obj_add_style( timelabel, LV_OBJ_PART_MAIN, &timestyle );
     lv_obj_align(timelabel, NULL, LV_ALIGN_CENTER, 0, 0);
+    */
 
     datelabel = lv_label_create( clock_cont , NULL);
     lv_label_set_text(datelabel, "1.Jan 1970");
@@ -81,10 +84,10 @@ void main_tile_setup( void ) {
     char buf[64];
 
     main_tile_format_time( buf, sizeof(buf), &info );
-    lv_label_set_text( timelabel, buf );
+    //lv_label_set_text( timelabel, buf );
     strftime( buf, sizeof(buf), "%a %d.%b %Y", &info );
     lv_label_set_text( datelabel, buf );
-    lv_obj_align( datelabel, timelabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
+    lv_obj_align( datelabel, clock_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
 
     for ( int widget = 0 ; widget < MAX_WIDGET_NUM ; widget++ ) {
         widget_entry[ widget ].active = false;
@@ -185,10 +188,10 @@ void main_tile_update_task( lv_task_t * task ) {
     // only update while time_str changes
     if ( strcmp( time_str, old_time_str ) ) {
         log_i("renew time_str: %s != %s", time_str, old_time_str );
-        lv_label_set_text( timelabel, time_str );
-        lv_obj_align( timelabel, clock_cont, LV_ALIGN_CENTER, 0, 0 );
-        strlcpy( old_time_str, time_str, sizeof( time_str ) );
+        //lv_label_set_text( timelabel, time_str );
+        //lv_obj_align( timelabel, clock_cont, LV_ALIGN_CENTER, 0, 0 );
 
+        strlcpy( old_time_str, time_str, sizeof( time_str ) );
         strftime( time_str, sizeof(time_str), "%a %d.%b %Y", &info );
         lv_label_set_text( datelabel, time_str );
         lv_obj_align( datelabel, clock_cont, LV_ALIGN_IN_BOTTOM_MID, 0, 0 );
