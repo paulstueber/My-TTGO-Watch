@@ -477,3 +477,4 @@ void statusbar_format_time( char * buf, size_t buf_len, struct tm * info ) {
         snprintf( buf, buf_len, "%d:%02d", h, m );
     }
 }
+
