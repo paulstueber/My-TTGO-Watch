@@ -32,6 +32,9 @@
 #include "FS.h"
 #include "SD.h"
 
+#include "gui/mainbar/setup_tile/time_settings/time_settings.h"
+#include "hardware/timesync.h"
+
 #include "statusbar.h"
 
 #include "hardware/powermgm.h"
@@ -44,6 +47,9 @@ static lv_obj_t *statusbar_wifi = NULL;
 static lv_obj_t *statusbar_wifilabel = NULL;
 static lv_obj_t *statusbar_wifiiplabel = NULL;
 static lv_obj_t *statusbar_bluetooth = NULL;
+static lv_obj_t *statusbar_time = NULL;
+static lv_obj_t *statusbar_date = NULL;
+static lv_obj_t *statusbar_stepicon = NULL;
 static lv_obj_t *statusbar_stepcounterlabel = NULL;
 static lv_style_t statusbarstyle[ STATUSBAR_STYLE_NUM ];
 
@@ -69,6 +75,7 @@ void statusbar_bluetooth_event_cb( lv_obj_t *wifi, lv_event_t event );
 void statusbar_blectl_event_cb( EventBits_t event, char* msg );
 void statusbar_wifictl_event_cb( EventBits_t event, char* msg );
 void statusbar_rtcctl_event_cb( EventBits_t event );
+void main_tile_format_time( char *, size_t, struct tm * );
 
 lv_task_t * statusbar_task;
 void statusbar_update_task( lv_task_t * task );
@@ -182,11 +189,26 @@ void statusbar_setup( void )
     lv_label_set_text(statusbar_wifiiplabel, "");
     lv_obj_align(statusbar_wifiiplabel, statusbar_wifilabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
 
-    lv_obj_t *statusbar_stepicon = lv_img_create(statusbar, NULL );
+
+    /*Display time in the upper left statusbar*/
+    statusbar_time = lv_label_create(statusbar, NULL);
+    lv_obj_reset_style_list( statusbar_time, LV_OBJ_PART_MAIN );
+    lv_obj_add_style( statusbar_time, LV_OBJ_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] );
+    lv_label_set_text(statusbar_time, "00:00");
+    lv_obj_align(statusbar_time, statusbar, LV_ALIGN_IN_TOP_LEFT, 5, 4 );
+
+    /*Display Date in the upper left statusbar*/
+    statusbar_date = lv_label_create(statusbar, NULL);
+    lv_obj_reset_style_list( statusbar_date, LV_OBJ_PART_MAIN );
+    lv_obj_add_style( statusbar_date, LV_OBJ_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] );
+    lv_label_set_text(statusbar_date, "01.01.20");
+    lv_obj_align(statusbar_date, statusbar_time, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+
+    statusbar_stepicon = lv_img_create(statusbar, NULL );
     lv_img_set_src( statusbar_stepicon, &foot_16px );
     lv_obj_reset_style_list( statusbar_stepicon, LV_OBJ_PART_MAIN );
     lv_obj_add_style( statusbar_stepicon, LV_OBJ_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] );
-    lv_obj_align(statusbar_stepicon, statusbar, LV_ALIGN_IN_TOP_LEFT, 5, 4 );
+    lv_obj_align(statusbar_stepicon, statusbar_date, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
 
     statusbar_stepcounterlabel = lv_label_create(statusbar, NULL);
     lv_obj_reset_style_list( statusbar_stepcounterlabel, LV_OBJ_PART_MAIN );
@@ -208,6 +230,21 @@ void statusbar_setup( void )
 }
 
 void statusbar_update_task( lv_task_t * task ) {
+
+
+    struct tm  info;
+    char buf[64];
+
+    main_tile_format_time( buf, sizeof(buf), &info );
+    lv_label_set_text( statusbar_time, buf );
+    //strftime( buf, sizeof(buf), "%a %d.%b %Y", &info );
+    strftime( buf, sizeof(buf), "%d.%m.", &info );
+    lv_label_set_text( statusbar_date, buf );
+
+    lv_obj_align( statusbar_date, statusbar_time, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+    lv_obj_align(statusbar_stepicon, statusbar_date, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+    lv_obj_align(statusbar_stepcounterlabel, statusbar_stepicon, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+
     statusbar_refresh();
 }
 
@@ -414,4 +451,22 @@ void statusbar_update_battery( int32_t percent, bool charging, bool plug ) {
 
 void statusbar_hide( bool hide ) {
     lv_obj_set_hidden( statusbar, hide );
+}
+
+void statusbar_format_time( char * buf, size_t buf_len, struct tm * info ) {
+    time_t now;
+
+    time( &now );
+    localtime_r( &now, info );
+    int h = info->tm_hour;
+    int m = info->tm_min;
+
+    if ( timesync_get_24hr() ) {
+        snprintf( buf, buf_len, "%02d:%02d", h, m );
+    }
+    else {
+        if (h == 0) h = 12;
+        if (h > 12) h -= 12;
+        snprintf( buf, buf_len, "%d:%02d", h, m );
+    }
 }
