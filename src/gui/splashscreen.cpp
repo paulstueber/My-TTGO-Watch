@@ -28,7 +28,7 @@ lv_obj_t *preload = NULL;
 lv_obj_t *preload_label = NULL;
 lv_style_t style;
 
-LV_IMG_DECLARE(hedgehog);
+LV_IMG_DECLARE(clancy_gilroy);
 
 void splash_screen_stage_one( void ) {
 
@@ -47,20 +47,21 @@ void splash_screen_stage_one( void ) {
     lv_obj_align( background, NULL, LV_ALIGN_CENTER, 0, 0 );
 
     logo = lv_img_create( background , NULL );
-    lv_img_set_src( logo, &hedgehog );
+    lv_img_set_src( logo, &clancy_gilroy );
     lv_obj_align( logo, NULL, LV_ALIGN_CENTER, 0, 0 );
 
     preload = lv_bar_create( background, NULL );
-    lv_obj_set_size( preload, lv_disp_get_hor_res( NULL ) - 80, 20 );
+    lv_obj_set_size( preload, lv_disp_get_hor_res( NULL ) - 50, 5 );
     lv_obj_add_style( preload, LV_OBJ_PART_MAIN, &style );
-    lv_obj_align( preload, logo, LV_ALIGN_OUT_BOTTOM_MID, 0, 30 );
+    lv_obj_align( preload, background, LV_ALIGN_OUT_BOTTOM_MID, 0, -10 );
     lv_bar_set_anim_time( preload, 2000);
     lv_bar_set_value( preload, 0, LV_ANIM_ON);
 
     preload_label = lv_label_create( background, NULL );
     lv_label_set_text( preload_label, "booting" );
     lv_obj_add_style( preload_label, LV_OBJ_PART_MAIN, &style );
-    lv_obj_align( preload_label, preload, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align( preload_label, preload, LV_ALIGN_OUT_BOTTOM_MID, 0, -30 );
+
 
     lv_disp_trig_activity( NULL );
 
@@ -80,9 +81,12 @@ void splash_screen_stage_update( const char* msg, int value ) {
     lv_task_handler();
     delay(100);
 //    lv_bar_set_value( preload, value, LV_ANIM_ON );
-    lv_bar_set_value( preload, 0, LV_ANIM_ON );
+    lv_bar_set_value( preload, value, LV_ANIM_ON );
     lv_label_set_text( preload_label, msg );
-    lv_obj_align( preload_label, preload, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    //lv_obj_align( preload_label, preload, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_obj_align( preload_label, preload, LV_ALIGN_OUT_BOTTOM_MID, 0, -30 );
+
+
     lv_task_handler();
     delay(500);
 }
@@ -90,9 +94,16 @@ void splash_screen_stage_update( const char* msg, int value ) {
 void splash_screen_stage_finish( void ) {
     TTGOClass *ttgo = TTGOClass::getWatch();
 
+    splash_screen_stage_update("Starting simulation", 100);
+    lv_bar_set_value( preload, 100, LV_ANIM_ON );
+
+    //lv_obj_align( preload_label, preload, LV_ALIGN_OUT_BOTTOM_MID, 0, 5 );
+    lv_task_handler();
+    delay(500);
+
     for( int bl = display_get_brightness() ; bl >= 0 ; bl-- ) {
         ttgo->bl->adjust( bl );
-        delay(5);
+        delay(10);
     }
     lv_obj_del( logo );
     lv_obj_del( preload );
