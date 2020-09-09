@@ -35,6 +35,7 @@ lv_style_t dont_panic_quote_style;
 
 lv_obj_t *dont_panic_foobar_switch = NULL;
 lv_obj_t * quote_label = NULL;
+lv_obj_t * page  = NULL;
 
 LV_IMG_DECLARE(exit_32px);
 
@@ -76,7 +77,7 @@ void dont_panic_quote_setup( uint32_t tile_num ) {
     lv_obj_set_event_cb( quote_button, exit_dont_panic_quote_event_cb );
 
         /*Create a page*/
-    lv_obj_t * page = lv_page_create(quote_button, NULL);
+    page = lv_page_create(quote_button, NULL);
     //lv_obj_set_size(page, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - 45);
     lv_obj_set_size(page, lv_disp_get_hor_res( NULL ), lv_disp_get_ver_res( NULL ) - 45);
     lv_obj_add_style( page, LV_OBJ_PART_MAIN, &dont_panic_quote_style  );
@@ -120,6 +121,7 @@ void dont_panic_load_random_quote( void ) {
                 uint8_t index = random (0, doc.size());
                 log_i("selected qoute nr %d of %d : %s", index, doc.size(), doc[index]);
                 lv_label_set_text(quote_label, doc[index]);
+                lv_page_scroll_ver(page, lv_obj_get_height(quote_label));
             }        
             doc.clear();
         }
