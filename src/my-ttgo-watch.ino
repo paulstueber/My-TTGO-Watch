@@ -90,7 +90,10 @@ void setup()
     powermgm_setup();
     splash_screen_stage_update( "init gui", 80 );
     splash_screen_stage_finish();
+    
+    sound_setup();
     gui_setup(); 
+
     /*
      * add apps and widgets here!!!
      */
@@ -113,8 +116,6 @@ void setup()
     blectl_setup();
 
     display_set_brightness( display_get_brightness() );
-
-    sound_setup();
 
     delay(500);
 
