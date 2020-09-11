@@ -76,15 +76,8 @@ void statusbar_bluetooth_event_cb( lv_obj_t *wifi, lv_event_t event );
 void statusbar_blectl_event_cb( EventBits_t event, char* msg );
 void statusbar_wifictl_event_cb( EventBits_t event, char* msg );
 void statusbar_rtcctl_event_cb( EventBits_t event );
-<<<<<<< HEAD
 void statusbar_bma_event_cb( EventBits_t event, const char *msg );
-<<<<<<< HEAD
-=======
 void main_tile_format_time( char *, size_t, struct tm * );
->>>>>>> display date and time in statusbar
-=======
-void main_tile_format_time( char *, size_t, struct tm * );
->>>>>>> display date and time in statusbar
 
 lv_task_t * statusbar_task;
 void statusbar_update_task( lv_task_t * task );
@@ -217,15 +210,7 @@ void statusbar_setup( void )
     lv_img_set_src( statusbar_stepicon, &foot_16px );
     lv_obj_reset_style_list( statusbar_stepicon, LV_OBJ_PART_MAIN );
     lv_obj_add_style( statusbar_stepicon, LV_OBJ_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] );
-<<<<<<< HEAD
-<<<<<<< HEAD
     lv_obj_align( statusbar_stepicon, statusbar, LV_ALIGN_IN_TOP_LEFT, 5, 4 );
-=======
-    lv_obj_align(statusbar_stepicon, statusbar_date, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
->>>>>>> display date and time in statusbar
-=======
-    lv_obj_align(statusbar_stepicon, statusbar_date, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
->>>>>>> display date and time in statusbar
 
     statusbar_stepcounterlabel = lv_label_create(statusbar, NULL );
     lv_obj_reset_style_list( statusbar_stepcounterlabel, LV_OBJ_PART_MAIN );
@@ -492,8 +477,5 @@ void statusbar_format_time( char * buf, size_t buf_len, struct tm * info ) {
         if (h > 12) h -= 12;
         snprintf( buf, buf_len, "%d:%02d", h, m );
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> display date and time in statusbar
+
