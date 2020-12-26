@@ -46,7 +46,6 @@ LV_IMG_DECLARE(dont_panic_48);
 LV_IMG_DECLARE(info_1_16px);
 
 // declare callback functions for the app and widget icon to enter the app
-static void enter_dont_panic_event_cb( lv_obj_t * obj, lv_event_t event );
 static void enter_dont_panic_widget_event_cb( lv_obj_t * obj, lv_event_t event );
 
 /*
@@ -97,7 +96,7 @@ uint32_t dont_panic_get_app_setup_tile_num( void ) {
 /*
  *
  */
-static void enter_dont_panic_event_cb( lv_obj_t * obj, lv_event_t event ) {
+void enter_dont_panic_event_cb( lv_obj_t * obj, lv_event_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       statusbar_hide( true );
                                         app_hide_indicator( dont_panic );

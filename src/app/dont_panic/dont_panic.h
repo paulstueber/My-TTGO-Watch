@@ -25,9 +25,10 @@
     #include <TTGO.h>
 
     #define DONT_PANIC_JSON_QUOTES_FILE        "/dont_panic_quotes.json"
-    #define DONT_PANIC_WIDGET    // uncomment if an widget need
+    //#define DONT_PANIC_WIDGET    // uncomment if an widget need
 
     void dont_panic_setup( void );
+    void enter_dont_panic_event_cb( lv_obj_t * obj, lv_event_t event );
     uint32_t dont_panic_get_app_setup_tile_num( void );
     uint32_t dont_panic_get_app_main_tile_num( void );
 

@@ -27,6 +27,7 @@
 #include "gui/mainbar/setup_tile/time_settings/time_settings.h"
 #include "main_tile.h"
 #include "hardware/timesync.h"
+#include "app/dont_panic/dont_panic.h"
 
 static lv_obj_t *main_cont = NULL;
 static lv_obj_t *clock_cont = NULL;
@@ -42,6 +43,7 @@ icon_t widget_entry[ MAX_WIDGET_NUM ];
 
 LV_FONT_DECLARE(Ubuntu_72px);
 LV_FONT_DECLARE(Ubuntu_16px);
+LV_IMG_DECLARE(dont_panic_48);
 
 lv_task_t * main_tile_task;
 
@@ -116,6 +118,15 @@ void main_tile_setup( void ) {
         lv_obj_set_hidden( widget_entry[ widget ].label, true );
         lv_obj_set_hidden( widget_entry[ widget ].ext_label, true );
     }
+
+    lv_obj_t * dont_panic_home_button = lv_imgbtn_create( main_cont, NULL);
+    lv_imgbtn_set_src(dont_panic_home_button, LV_BTN_STATE_RELEASED, &dont_panic_48);
+    lv_imgbtn_set_src(dont_panic_home_button, LV_BTN_STATE_PRESSED, &dont_panic_48);
+    lv_imgbtn_set_src(dont_panic_home_button, LV_BTN_STATE_CHECKED_RELEASED, &dont_panic_48);
+    lv_imgbtn_set_src(dont_panic_home_button, LV_BTN_STATE_CHECKED_PRESSED, &dont_panic_48);
+    lv_obj_add_style(dont_panic_home_button, LV_IMGBTN_PART_MAIN, style );
+    lv_obj_align(dont_panic_home_button, main_cont, LV_ALIGN_OUT_BOTTOM_RIGHT, -40, -150 );
+    lv_obj_set_event_cb( dont_panic_home_button, enter_dont_panic_event_cb );
 
     main_tile_task = lv_task_create( main_tile_update_task, 500, LV_TASK_PRIO_MID, NULL );
 }

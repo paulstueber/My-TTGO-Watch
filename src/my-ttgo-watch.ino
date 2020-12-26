@@ -97,13 +97,13 @@ void setup()
     /*
      * add apps and widgets here!!!
      */
-    weather_app_setup();
+    //weather_app_setup();
     stopwatch_app_setup();
-    crypto_ticker_setup();
-    example_app_setup();
-    osmand_app_setup();
-    IRController_setup();
-    powermeter_app_setup();
+    //crypto_ticker_setup();
+    //example_app_setup();
+    //osmand_app_setup();
+    //IRController_setup();
+    //powermeter_app_setup();
     dont_panic_setup();
     /*
      *
@@ -118,6 +118,8 @@ void setup()
     display_set_brightness( display_get_brightness() );
 
     delay(500);
+
+    sound_play_spiffs_mp3("/knight_rider.mp3");
 
     Serial.printf("Total heap: %d\r\n", ESP.getHeapSize());
     Serial.printf("Free heap: %d\r\n", ESP.getFreeHeap());

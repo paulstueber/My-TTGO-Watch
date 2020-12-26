@@ -36,8 +36,7 @@ void splash_screen_stage_one( void ) {
 
     lv_style_init( &style );
     lv_style_set_radius( &style, LV_OBJ_PART_MAIN, 0 );
-    lv_style_set_bg_color( &style, LV_OBJ_PART_MAIN, LV_COLOR_BLACK );
-    lv_style_set_bg_opa( &style, LV_OBJ_PART_MAIN, LV_OPA_100 );
+    lv_style_set_bg_opa( &style, LV_OBJ_PART_MAIN, LV_OPA_0 );
     lv_style_set_border_width( &style, LV_OBJ_PART_MAIN, 0 );
     lv_style_set_text_color( &style, LV_OBJ_PART_MAIN, LV_COLOR_WHITE );
 
@@ -49,6 +48,11 @@ void splash_screen_stage_one( void ) {
     logo = lv_img_create( background , NULL );
     lv_img_set_src( logo, &clancy_gilroy );
     lv_obj_align( logo, NULL, LV_ALIGN_CENTER, 0, 0 );
+
+    lv_obj_t *splash_title = lv_label_create( background, NULL );
+    lv_label_set_text( splash_title, "Dr. \nPeters \nBonanati" );
+    lv_obj_add_style( splash_title, LV_OBJ_PART_MAIN, &style );
+    lv_obj_align( splash_title, background, LV_ALIGN_IN_TOP_LEFT, 10, 10 );
 
     preload = lv_bar_create( background, NULL );
     lv_obj_set_size( preload, lv_disp_get_hor_res( NULL ) - 50, 5 );

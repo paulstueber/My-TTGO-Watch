@@ -200,11 +200,13 @@ void statusbar_setup( void )
     lv_obj_align(statusbar_time, statusbar, LV_ALIGN_IN_TOP_LEFT, 5, 4 );
 
     /*Display Date in the upper left statusbar*/
+    /*
     statusbar_date = lv_label_create(statusbar, NULL);
     lv_obj_reset_style_list( statusbar_date, LV_OBJ_PART_MAIN );
     lv_obj_add_style( statusbar_date, LV_OBJ_PART_MAIN, &statusbarstyle[ STATUSBAR_STYLE_WHITE ] );
     lv_label_set_text(statusbar_date, "01.01.20");
     lv_obj_align(statusbar_date, statusbar_time, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+    */
 
     statusbar_stepicon = lv_img_create(statusbar, NULL );
     lv_img_set_src( statusbar_stepicon, &foot_16px );
@@ -241,11 +243,13 @@ void statusbar_update_task( lv_task_t * task ) {
     main_tile_format_time( buf, sizeof(buf), &info );
     lv_label_set_text( statusbar_time, buf );
     //strftime( buf, sizeof(buf), "%a %d.%b %Y", &info );
+    /*
     strftime( buf, sizeof(buf), "%d.%m.", &info );
     lv_label_set_text( statusbar_date, buf );
-
-    lv_obj_align( statusbar_date, statusbar_time, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
-    lv_obj_align(statusbar_stepicon, statusbar_date, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+    */
+   
+    //lv_obj_align( statusbar_date, statusbar_time, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
+    lv_obj_align(statusbar_stepicon, statusbar_time, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
     lv_obj_align(statusbar_stepcounterlabel, statusbar_stepicon, LV_ALIGN_OUT_RIGHT_MID, 5, 0 );
 
     statusbar_refresh();

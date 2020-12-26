@@ -42,8 +42,7 @@ LV_IMG_DECLARE(refresh_32px);
 LV_IMG_DECLARE(dont_panic_240);
 LV_FONT_DECLARE(Ubuntu_72px);
 
-static void exit_dont_panic_main_event_cb( lv_obj_t * obj, lv_event_t event );
-static void enter_dont_panic_quote_event_cb( lv_obj_t * obj, lv_event_t event );
+void enter_dont_panic_quote_event_cb( lv_obj_t * obj, lv_event_t event );
 void dont_panic_task( lv_task_t * task );
 
 void dont_panic_main_setup( uint32_t tile_num ) {
@@ -64,18 +63,11 @@ void dont_panic_main_setup( uint32_t tile_num ) {
     _dont_panic_task = lv_task_create( dont_panic_task, 1000, LV_TASK_PRIO_MID, NULL );
 }
 
-static void enter_dont_panic_quote_event_cb( lv_obj_t * obj, lv_event_t event ) {
+void enter_dont_panic_quote_event_cb( lv_obj_t * obj, lv_event_t event ) {
     switch( event ) {
         case( LV_EVENT_CLICKED ):       statusbar_hide( true );
                                         dont_panic_load_random_quote();
                                         mainbar_jump_to_tilenumber( dont_panic_get_app_setup_tile_num(), LV_ANIM_ON );
-                                        break;
-    }
-}
-
-static void exit_dont_panic_main_event_cb( lv_obj_t * obj, lv_event_t event ) {
-    switch( event ) {
-        case( LV_EVENT_CLICKED ):       mainbar_jump_to_maintile( LV_ANIM_OFF );
                                         break;
     }
 }

@@ -25,5 +25,6 @@
     #include <TTGO.h>
 
     void dont_panic_main_setup( uint32_t tile_num );
+    void enter_dont_panic_quote_event_cb( lv_obj_t * obj, lv_event_t event );
 
 #endif // _DONT_PANIC_MAIN_H
